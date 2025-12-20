@@ -2,23 +2,33 @@ package com.example.calculatorwithfriends;
 
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 public class HistoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_history);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        // Find the RecyclerView
+        RecyclerView recyclerView = findViewById(R.id.historyRecyclerView);
+
+        // Make it a vertical scrolling list
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // TEMP data so we can see something on screen
+        ArrayList<String> history = new ArrayList<>();
+        history.add("12 + 3 = 15");
+        history.add("5 × 6 = 30");
+        history.add("100 ÷ 4 = 25");
+
+        // Connect adapter
+        HistoryAdapter adapter = new HistoryAdapter(history);
+        recyclerView.setAdapter(adapter);
     }
 }
