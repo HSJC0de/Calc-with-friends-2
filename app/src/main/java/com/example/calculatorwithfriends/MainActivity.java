@@ -29,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
     }
-    protected void addToInput(View v){
+    protected void onButtonClicked(View v){
+        //Adds value of v to currInput
         String symbol = v.toString();
         if(symbol.equals("=")){
             //Call evaluate(), store result in string
