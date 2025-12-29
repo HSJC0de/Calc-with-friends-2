@@ -3,8 +3,10 @@ package com.example.calculatorwithfriends;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -43,16 +45,17 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
-    protected void onButtonClicked(View v){
-        //Adds value of v to currInput
-        String symbol = v.toString();
+    public void onButtonClicked(@NonNull View view){
+        //Adds value of view to currInput
+        String symbol = (String)((TextView)view).getText();
+        System.out.println(symbol);
         if(symbol.equals("=")){
             //Call evaluate(), store result in string
             String result = evaluate();
             //Call displayResult(result), which displays result in activity_main
             displayResult(result);
             //Call saveToHistory(result), which passes result to the history ArrayList
-            saveToHistory(result);
+            //saveToHistory(result);
         }
         else if(symbol.equals("Ans")){
             //Obtains previous answer from history ArrayList if history is not empty
@@ -69,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         //Call outside library to evaluate currInput
         //String result = OUTSIDE LIBRARY FUNCTION;
         //return result;
-        return null;
+        return "hi";
     }
     protected void displayResult(String value){
         //Modifies contents of current gray box in activity_main.xml to be the answer
@@ -79,6 +82,6 @@ public class MainActivity extends AppCompatActivity {
     }
     protected void saveToHistory(String value){
         //Stores value into history ArrayList
-        history.add(new Double(value));
+        history.add(Double.valueOf(value));
     }
 }
