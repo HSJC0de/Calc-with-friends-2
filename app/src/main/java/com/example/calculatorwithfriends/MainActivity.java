@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     public void onButtonClicked(@NonNull View view){
         //Adds value of view to currInput
         String symbol = (String)((TextView)view).getText();
-        System.out.println(symbol);
+        System.out.println("symbol: " + symbol);
         if(symbol.equals("=")){
             //Call evaluate(), store result in string
             String result = evaluate();
@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             displayResult(result);
             //Call saveToHistory(result), which passes result to the history ArrayList
             //saveToHistory(result);
+            currInput = "";
         }
         else if(symbol.equals("Ans")){
             //Obtains previous answer from history ArrayList if history is not empty
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             currInput += symbol;
+            System.out.println("currInput: " + currInput);
         }
     }
     protected String evaluate(){
