@@ -78,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
     }
     protected void displayResult(String value){
         //Modifies contents of current gray box in activity_main.xml to be the answer
-        //Value v = getValueById(ID OF GRAY BOX);
-        //v.text = value;
         currInput = value;
     }
     protected void saveToHistory(String value){
