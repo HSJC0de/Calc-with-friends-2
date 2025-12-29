@@ -15,6 +15,8 @@ import androidx.core.view.WindowInsetsCompat;
 import android.view.View;
 
 import java.util.ArrayList;
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -53,9 +55,14 @@ public class MainActivity extends AppCompatActivity {
             //Call evaluate(), store result in string
             String result = evaluate();
             //Call displayResult(result), which displays result in activity_main
-            displayResult(result);
+
+
+            //displayResult(result);
+
+
             //Call saveToHistory(result), which passes result to the history ArrayList
             //saveToHistory(result);
+            System.out.println(result);
         }
         else if(symbol.equals("Ans")){
             //Obtains previous answer from history ArrayList if history is not empty
@@ -64,15 +71,48 @@ public class MainActivity extends AppCompatActivity {
                 currInput += prevAns;
             }
         }
+        else if(symbol.equals("C")){
+            // clear currInput
+            currInput = "";
+        }
+        else if (symbol.equals("del")){
+            // delete last character from currInput
+            if (currInput.length() != 0) {
+                currInput = currInput.substring(0, currInput.length() - 1);
+            }
+        }
         else{
             currInput += symbol;
         }
     }
+
+    // returns null if invalid expression
+    // returns double if valid expression
     protected String evaluate(){
         //Call outside library to evaluate currInput
         //String result = OUTSIDE LIBRARY FUNCTION;
         //return result;
-        return "hi";
+
+        // edge cases
+        // 1. Evaluating empty string expression
+        // 2. Evaluating string expression that ends with operator
+
+        String exprStr = currInput;
+
+        // edge case checks
+        if (exprStr.length() == 0){
+            return null;
+        }
+        String lastChar = exprStr.substring(exprStr.length() - 1);
+        if (lastChar.equals("/") || lastChar.equals("*") || lastChar.equals("-") || lastChar.equals("+")){
+            return null;
+        }
+
+        // Build and evaluate expression
+        Expression expr = new ExpressionBuilder(exprStr).build();
+        double result = expr.evaluate();
+
+        return String.valueOf(result);
     }
     protected void displayResult(String value){
         //Modifies contents of current gray box in activity_main.xml to be the answer
