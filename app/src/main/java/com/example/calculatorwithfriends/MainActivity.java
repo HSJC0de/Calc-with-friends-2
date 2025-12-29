@@ -22,11 +22,13 @@ public class MainActivity extends AppCompatActivity {
     String currInput = "";
     ArrayList<Double> history = new ArrayList<>();
 
+    TextView displayText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        displayText = findViewById(R.id.displayText);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -45,30 +47,54 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
-    public void onButtonClicked(@NonNull View view){
-        //Adds value of view to currInput
-        String symbol = (String)((TextView)view).getText();
-        System.out.println("symbol: " + symbol);
-        if(symbol.equals("=")){
-            //Call evaluate(), store result in string
+    public void onButtonClicked(@NonNull View view) {
+        String symbol = ((TextView) view).getText().toString();
+
+        if (symbol.equals("=")) {
             String result = evaluate();
-            //Call displayResult(result), which displays result in activity_main
-            displayResult(result);
-            //Call saveToHistory(result), which passes result to the history ArrayList
-            //saveToHistory(result);
+
+            // show result on screen
+            displayText.setText(result);
+
+            // optional: save to history
+            // saveToHistory(result);
+
+            // blink when result appears
+            blinkDisplay();
+
             currInput = "";
         }
-        else if(symbol.equals("Ans")){
-            //Obtains previous answer from history ArrayList if history is not empty
-            if(!history.isEmpty()){
+        else if (symbol.equals("Ans")) {
+            if (!history.isEmpty()) {
                 String prevAns = history.get(history.size() - 1).toString();
                 currInput += prevAns;
+                displayText.setText(currInput);
             }
         }
-        else{
+        else {
             currInput += symbol;
-            System.out.println("currInput: " + currInput);
+            displayText.setText(currInput);
         }
+    }
+    private void blinkDisplay() {
+        displayText.animate()
+                .alpha(0f)
+                .setDuration(150)
+                .withEndAction(() ->
+                        displayText.animate()
+                                .alpha(1f)
+                                .setDuration(150)
+                                .withEndAction(() ->
+                                        displayText.animate()
+                                                .alpha(0f)
+                                                .setDuration(150)
+                                                .withEndAction(() ->
+                                                        displayText.animate()
+                                                                .alpha(1f)
+                                                                .setDuration(150)
+                                                )
+                                )
+                );
     }
     protected String evaluate(){
         //Call outside library to evaluate currInput
